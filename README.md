@@ -1,3 +1,13 @@
+<img width="1357" height="704" alt="Image" src="https://github.com/user-attachments/assets/036f60c1-ee57-411a-b1ed-ef3a8800a939" />
+<img width="1357" height="701" alt="Image" src="https://github.com/user-attachments/assets/940d63cb-2ab5-4004-ae73-185ff3bd472c" />
+<img width="1355" height="699" alt="Image" src="https://github.com/user-attachments/assets/aef1cf70-5228-471d-9191-a1c8594bf060" />
+<img width="1355" height="700" alt="Image" src="https://github.com/user-attachments/assets/9bb5f1d1-752c-47e8-a7af-97f215a4c271" />
+<img width="1356" height="699" alt="Image" src="https://github.com/user-attachments/assets/715089cd-e5e1-4509-b45d-c6bc1c2eebc3" />
+<img width="1355" height="702" alt="Image" src="https://github.com/user-attachments/assets/e7ee2a72-dbff-4fac-b3e3-3f3c93059405" />
+<img width="1355" height="701" alt="Image" src="https://github.com/user-attachments/assets/079bbde2-aea3-46d6-8a05-b4e2a7d6948d" />
+<img width="1355" height="701" alt="Image" src="https://github.com/user-attachments/assets/393f681b-6e10-4382-a261-dc7a7b96d630" />
+<img width="1355" height="699" alt="Image" src="https://github.com/user-attachments/assets/26b6707d-9b18-47c3-b6da-42a3c25a680d" />
+
 This is a [Next.js](https://nextjs.org) app that uses Clerk (auth), Drizzle ORM, Postgres, Hume, Arcjet, and Google Gemini.
 
 ## Quick start (Windows, cmd.exe)
