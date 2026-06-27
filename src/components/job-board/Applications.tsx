@@ -40,6 +40,7 @@ export function Applications({ user }: ApplicationsProps) {
     if (user) {
       fetchApplications()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   const fetchApplications = async () => {
@@ -86,8 +87,8 @@ export function Applications({ user }: ApplicationsProps) {
       )
 
       setApplications(appsWithJobs)
-    } catch (error: any) {
-      toast.error(error.message || "Failed to fetch applications")
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to fetch applications")
     } finally {
       setLoading(false)
     }
@@ -190,8 +191,8 @@ export function ApplyForm({ job, open, onClose }: ApplyFormProps) {
         message: "",
       })
       onClose()
-    } catch (error: any) {
-      toast.error(error.message || "Failed to submit application")
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to submit application")
       console.error("Application submission error:", error)
     } finally {
       setLoading(false)

@@ -23,14 +23,15 @@ export async function POST(request: NextRequest) {
     return new Response("Missing webhook headers", { status: 400 })
   }
 
-  let event: any
+  let event: { type: string; data: Record<string, unknown> }
   try {
     const wh = new Webhook(secret)
-    event = wh.verify(payload, {
+    const verified = wh.verify(payload, {
       "svix-id": svixId,
       "svix-timestamp": svixTimestamp,
       "svix-signature": svixSignature,
-    })
+    }) as { type: string; data: Record<string, unknown> }
+    event = verified
   } catch (error) {
     console.error("Webhook verification failed:", error)
     return new Response("Invalid webhook signature", { status: 400 })
@@ -42,9 +43,11 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case "user.created":
       case "user.updated":
-        const clerkData = event.data
-        const email = clerkData.email_addresses.find(
-          (e: any) => e.id === clerkData.primary_email_address_id
+        const clerkData = event.data as Record<string, unknown>
+        const emailAddresses = clerkData.email_addresses as Array<{ id: string; email_address: string }>
+        const primaryEmailId = clerkData.primary_email_address_id as string
+        const email = emailAddresses.find(
+          (e) => e.id === primaryEmailId
         )?.email_address
         if (email == null) {
           console.error("No primary email found")
@@ -53,22 +56,23 @@ export async function POST(request: NextRequest) {
 
         console.log("Attempting to upsert user:", clerkData.id)
         await upsertUser({
-          id: clerkData.id,
+          id: clerkData.id as string,
           email,
           name: `${clerkData.first_name ?? ""} ${clerkData.last_name ?? ""}`.trim(),
-          imageUrl: clerkData.image_url,
-          createdAt: new Date(clerkData.created_at),
-          updatedAt: new Date(clerkData.updated_at),
+          imageUrl: clerkData.image_url as string,
+          createdAt: new Date(clerkData.created_at as string),
+          updatedAt: new Date(clerkData.updated_at as string),
         })
         console.log("User upserted successfully")
 
         break
       case "user.deleted":
-        if (event.data.id == null) {
+        const deletedId = (event.data as { id?: string }).id
+        if (deletedId == null) {
           return new Response("No user ID found", { status: 400 })
         }
 
-        await deleteUser(event.data.id)
+        await deleteUser(deletedId)
         console.log("User deleted:", event.data.id)
         break
     }

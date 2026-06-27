@@ -54,8 +54,8 @@ export function JobBoard({ user, viewMode, onApply }: JobBoardProps) {
 
       if (error) throw error
       setJobs(data || [])
-    } catch (error: any) {
-      toast.error(error.message || "Failed to fetch jobs")
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to fetch jobs")
     } finally {
       setLoading(false)
     }
@@ -63,6 +63,7 @@ export function JobBoard({ user, viewMode, onApply }: JobBoardProps) {
 
   useEffect(() => {
     fetchJobs()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewMode, user])
 
   const handleDelete = async () => {
@@ -80,8 +81,8 @@ export function JobBoard({ user, viewMode, onApply }: JobBoardProps) {
       toast.success("Job deleted successfully!")
       setJobs(jobs.filter((job) => job.id !== deleteJobId))
       setDeleteJobId(null)
-    } catch (error: any) {
-      toast.error(error.message || "Failed to delete job")
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to delete job")
     }
   }
 

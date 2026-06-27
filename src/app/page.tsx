@@ -8,13 +8,10 @@ import {
   BrainCircuitIcon,
   BriefcaseIcon,
   FileSlidersIcon,
-  FileText,
-  Search,
   SearchIcon,
   SpeechIcon,
 } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 import { Suspense } from "react"
 import { UserAvatar } from "@/features/users/components/UserAvatar"
 import { PricingTable } from "@/services/clerk/components/PricingTable"
@@ -813,7 +810,7 @@ function Pricing() {
             <span className="text-primary">career acceleration</span> plan
           </h3>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Start with our <span className="font-semibold text-foreground">free job board and interview prep</span>, then upgrade for advanced features when you're ready
+            Start with our <span className="font-semibold text-foreground">free job board and interview prep</span>, then upgrade for advanced features when you&apos;re ready
           </p>
         </div>
 

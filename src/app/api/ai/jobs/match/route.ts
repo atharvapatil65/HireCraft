@@ -2,6 +2,7 @@ import { google } from "@/services/ai/models/google"
 import { generateObject } from "ai"
 import { NextRequest } from "next/server"
 import { z } from "zod"
+import type { Job } from "@/lib/supabase/client"
 
 const matchResultSchema = z.object({
   jobMatches: z.array(
@@ -41,7 +42,7 @@ CANDIDATE'S RESUME:
 ${resumeText}
 
 JOB LISTINGS:
-${jobs.map((job: any, idx: number) => `
+${jobs.map((job: Job, idx: number) => `
 Job ${idx + 1}:
 ID: ${job.id}
 Title: ${job.title}
@@ -81,9 +82,10 @@ Be honest and realistic in your assessments. A score of 70+ indicates a strong m
       success: true,
       matches: sortedMatches,
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error matching jobs:", error)
-    return new Response(error.message || "Failed to match jobs", {
+    const message = error instanceof Error ? error.message : "Failed to match jobs"
+    return new Response(message, {
       status: 500,
     })
   }

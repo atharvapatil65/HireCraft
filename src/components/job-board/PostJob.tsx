@@ -102,8 +102,8 @@ export function PostJob({ user, onJobPosted, editJob, trigger, isOpen: controlle
         contact: user.email || "",
       })
       onJobPosted?.()
-    } catch (error: any) {
-      toast.error(error.message || "Failed to post job")
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to post job")
     } finally {
       setLoading(false)
     }

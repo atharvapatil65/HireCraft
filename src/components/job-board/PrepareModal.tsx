@@ -26,6 +26,7 @@ import { createJobInfo } from "@/features/jobInfos/actions"
 import { toast } from "sonner"
 import { Loader2Icon } from "lucide-react"
 import type { Job } from "@/lib/supabase/client"
+import type { ExperienceLevel } from "@/drizzle/schema/jobInfo"
 import { useRouter } from "next/navigation"
 
 interface PrepareModalProps {
@@ -41,7 +42,7 @@ export function PrepareModal({ job, open, onClose }: PrepareModalProps) {
     name: `${job.title} at ${job.company}`,
     title: job.title,
     description: `${job.description}\n\nRequirements:\n${job.requirements}\n\nLocation: ${job.location}\nType: ${job.type}\nSalary: ${job.salary}`,
-    experienceLevel: "mid-level" as const,
+    experienceLevel: "mid-level" as ExperienceLevel,
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,8 +65,8 @@ export function PrepareModal({ job, open, onClose }: PrepareModalProps) {
           router.push("/app")
         }, 500)
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to save job information")
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to save job information")
     } finally {
       setLoading(false)
     }
@@ -117,7 +118,7 @@ export function PrepareModal({ job, open, onClose }: PrepareModalProps) {
                   <Label htmlFor="experienceLevel">Experience Level</Label>
                   <Select
                     value={formData.experienceLevel}
-                    onValueChange={(value: any) => setFormData({ ...formData, experienceLevel: value })}
+                    onValueChange={(value: string) => setFormData({ ...formData, experienceLevel: value as ExperienceLevel })}
                   >
                     <SelectTrigger>
                       <SelectValue />

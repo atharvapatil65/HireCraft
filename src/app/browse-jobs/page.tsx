@@ -7,12 +7,10 @@ import { ResumeUpload } from "@/components/job-board/ResumeUpload"
 import { MatchedJobCard } from "@/components/job-board/MatchedJobCard"
 import { PrepareModal } from "@/components/job-board/PrepareModal"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { BriefcaseIcon, Loader2Icon, RocketIcon } from "lucide-react"
+import { BriefcaseIcon, Loader2Icon } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { supabase, type Job } from "@/lib/supabase/client"
 import { toast } from "sonner"
-import Link from "next/link"
 
 interface JobMatch {
   jobId: string
@@ -42,8 +40,8 @@ export default function BrowseJobsPage() {
 
         if (error) throw error
         setJobs(data || [])
-      } catch (error: any) {
-        toast.error(error.message || "Failed to fetch jobs")
+      } catch (error: unknown) {
+        toast.error(error instanceof Error ? error.message : "Failed to fetch jobs")
       } finally {
         setLoading(false)
       }
@@ -143,7 +141,7 @@ export default function BrowseJobsPage() {
             <CardHeader>
               <CardTitle>Available Positions</CardTitle>
               <CardDescription>
-                Click "Apply Now" to submit your application
+                Click &quot;Apply Now&quot; to submit your application
               </CardDescription>
             </CardHeader>
             <CardContent>

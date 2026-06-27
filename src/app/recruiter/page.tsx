@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { supabase } from "@/lib/supabase/client"
 import { toast } from "sonner"
-import { BriefcaseIcon, UsersIcon, LogOutIcon, PlusIcon } from "lucide-react"
+import { BriefcaseIcon, UsersIcon, LogOutIcon } from "lucide-react"
 import type { User } from "@supabase/supabase-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 

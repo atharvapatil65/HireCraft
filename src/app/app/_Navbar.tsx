@@ -8,14 +8,12 @@ import {
   SearchIcon,
   SpeechIcon,
   User,
-  UserCircleIcon,
 } from "lucide-react"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { SignOutButton, useClerk } from "@clerk/nextjs"

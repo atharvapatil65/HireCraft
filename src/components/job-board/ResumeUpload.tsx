@@ -83,9 +83,9 @@ export function ResumeUpload({ jobs, onMatchComplete, onClear }: ResumeUploadPro
       } else {
         throw new Error("Invalid response from server")
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error analyzing resume:", error)
-      toast.error(error.message || "Failed to analyze resume")
+      toast.error(error instanceof Error ? error.message : "Failed to analyze resume")
     } finally {
       setLoading(false)
     }
