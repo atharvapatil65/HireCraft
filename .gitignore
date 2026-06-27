@@ -4,4 +4,9 @@ mdfiles/
 # clerk configuration (can include secrets)
 /.clerk/
 
+# env files (contain secrets)
+.env
+.env.local
+.env.*
+
 .next
