@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentUser"
+import { upsertUser } from "@/features/users/db"
+import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
-import { OnboardingClient } from "./_client"
 
 export default async function OnboardingPage() {
   const { userId, user } = await getCurrentUser({ allData: true })
@@ -8,10 +9,24 @@ export default async function OnboardingPage() {
   if (userId == null) return redirect("/")
   if (user != null) return redirect("/app")
 
-  return (
-    <div className="container flex flex-col items-center justify-center h-screen gap-4">
-      <h1 className="text-4xl">Creating your account...</h1>
-      <OnboardingClient userId={userId} />
-    </div>
-  )
+  const clerkUser = await currentUser()
+  if (clerkUser == null) return redirect("/")
+
+  const primaryEmail =
+    clerkUser.emailAddresses.find((e) => e.id === clerkUser.primaryEmailAddressId) ??
+    clerkUser.emailAddresses[0]
+  if (primaryEmail == null) return redirect("/")
+
+  const name =
+    `${clerkUser.firstName ?? ""} ${clerkUser.lastName ?? ""}`.trim() ||
+    primaryEmail.emailAddress.split("@")[0]
+
+  await upsertUser({
+    id: clerkUser.id,
+    email: primaryEmail.emailAddress,
+    name,
+    imageUrl: clerkUser.imageUrl,
+  })
+
+  return redirect("/app")
 }
