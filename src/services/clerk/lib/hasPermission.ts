@@ -1,4 +1,5 @@
 import { auth } from "@clerk/nextjs/server"
+import { DEMO_MODE } from "@/data/env/demo"
 
 type Permission =
   | "unlimited_resume_analysis"
@@ -17,6 +18,8 @@ type Permission =
  * feature keys are not perfectly configured.
  */
 export async function hasPermission(permission: Permission) {
+  if (DEMO_MODE) return true
+
   const { has } = await auth()
   
   // First check if user has the specific permission

@@ -11,6 +11,7 @@ import { getInterviewIdTag } from "./dbCache"
 import { canCreateInterview } from "./permissions"
 import { PLAN_LIMIT_MESSAGE, RATE_LIMIT_MESSAGE } from "@/lib/errorToast"
 import { env } from "@/data/env/server"
+import { DEMO_MODE } from "@/data/env/demo"
 import arcjet, { tokenBucket, request } from "@arcjet/next"
 import { generateAiInterviewFeedback } from "@/services/ai/interviews"
 
@@ -47,15 +48,19 @@ export async function createInterview({
     }
   }
 
-  const decision = await aj.protect(await request(), {
-    userId,
-    requested: 1,
-  })
+  if (DEMO_MODE) {
+    // Skip rate limiting in demo mode
+  } else {
+    const decision = await aj.protect(await request(), {
+      userId,
+      requested: 1,
+    })
 
-  if (decision.isDenied()) {
-    return {
-      error: true,
-      message: RATE_LIMIT_MESSAGE,
+    if (decision.isDenied()) {
+      return {
+        error: true,
+        message: RATE_LIMIT_MESSAGE,
+      }
     }
   }
 

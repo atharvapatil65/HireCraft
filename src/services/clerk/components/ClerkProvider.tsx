@@ -1,8 +1,11 @@
 import { ReactNode } from "react"
 import { ClerkProvider as OriginalClerkProvider } from "@clerk/nextjs"
 import { buttonVariants } from "@/components/ui/button"
+import { DEMO_MODE } from "@/data/env/demo"
 
 export function ClerkProvider({ children }: { children: ReactNode }) {
+  if (DEMO_MODE) return children
+
   return (
     <OriginalClerkProvider
       appearance={{

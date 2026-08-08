@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { SignOutButton, useClerk } from "@clerk/nextjs"
+import { DEMO_MODE } from "@/data/env/demo"
 import Link from "next/link"
 import { UserAvatar } from "@/features/users/components/UserAvatar"
 import { useParams, usePathname } from "next/navigation"
@@ -29,7 +30,6 @@ const navLinks = [
 ]
 
 export function Navbar({ user }: { user: { name: string; imageUrl: string } }) {
-  const { openUserProfile } = useClerk()
   const { jobInfoId } = useParams()
   const pathName = usePathname()
 
@@ -75,25 +75,33 @@ export function Navbar({ user }: { user: { name: string; imageUrl: string } }) {
 
           <ThemeToggle />
 
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <UserAvatar user={user} />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem onClick={() => openUserProfile()}>
-                <User className="mr-2" />
-                Profile
-              </DropdownMenuItem>
-              <SignOutButton>
-                <DropdownMenuItem>
-                  <LogOut className="mr-2" />
-                  Logout
-                </DropdownMenuItem>
-              </SignOutButton>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {DEMO_MODE ? <UserAvatar user={user} /> : <ClerkUserMenu user={user} />}
         </div>
       </div>
     </nav>
+  )
+}
+
+function ClerkUserMenu({ user }: { user: { name: string; imageUrl: string } }) {
+  const { openUserProfile } = useClerk()
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <UserAvatar user={user} />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuItem onClick={() => openUserProfile()}>
+          <User className="mr-2" />
+          Profile
+        </DropdownMenuItem>
+        <SignOutButton>
+          <DropdownMenuItem>
+            <LogOut className="mr-2" />
+            Logout
+          </DropdownMenuItem>
+        </SignOutButton>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

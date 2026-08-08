@@ -1,6 +1,8 @@
 import arcjet, { detectBot, shield, slidingWindow } from "@arcjet/next"
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
+import { DEMO_MODE } from "./data/env/demo"
 import { env } from "./data/env/server"
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server"
 
 const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
@@ -24,7 +26,7 @@ const aj = arcjet({
   ],
 })
 
-export default clerkMiddleware(async (auth, req) => {
+const clerkHandler = clerkMiddleware(async (auth, req) => {
   const decision = await aj.protect(req)
 
   if (decision.isDenied()) {
@@ -36,6 +38,11 @@ export default clerkMiddleware(async (auth, req) => {
     if (userId == null) return redirectToSignIn()
   }
 })
+
+export default function middleware(req: NextRequest, event: NextFetchEvent) {
+  if (DEMO_MODE) return NextResponse.next()
+  return clerkHandler(req, event)
+}
 
 export const config = {
   matcher: [

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentUser"
+import { DEMO_MODE } from "@/data/env/demo"
 import { SignInButton } from "@clerk/nextjs"
 import {
   BookOpenCheckIcon,
@@ -56,9 +57,15 @@ function Navbar() {
             </Button>
             <Suspense
               fallback={
-                <SignInButton forceRedirectUrl="/app">
-                  <Button variant="outline">Sign In</Button>
-                </SignInButton>
+                DEMO_MODE ? (
+                  <Button asChild>
+                    <Link href="/app">Dashboard</Link>
+                  </Button>
+                ) : (
+                  <SignInButton forceRedirectUrl="/app">
+                    <Button variant="outline">Sign In</Button>
+                  </SignInButton>
+                )
               }
             >
               <NavButton />
@@ -71,6 +78,14 @@ function Navbar() {
 }
 
 async function NavButton() {
+  if (DEMO_MODE) {
+    return (
+      <Button asChild>
+        <Link href="/app">Dashboard</Link>
+      </Button>
+    )
+  }
+
   const { userId } = await getCurrentUser()
 
   if (userId == null) {
