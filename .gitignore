@@ -10,3 +10,5 @@ mdfiles/
 .env.*
 
 .next
+.vercel
+.env*

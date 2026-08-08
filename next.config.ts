@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       allowedOrigins: [
         "localhost:3000",
         "*.devtunnels.ms",
+        "*.vercel.app",
       ],
     },
   },
